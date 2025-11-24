@@ -35,9 +35,9 @@ from telegram.helpers import escape_markdown
 
 # --- CONFIGURATION ---
 # 1. Telegram Settings
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "8133117251:AAH2pr-gQ2bjr4EYxKhdk_tcPlqQxAaXF9Y")
-MAIN_CHANNEL_USERNAME = os.environ.get("MAIN_CHANNEL_USERNAME", "Unix_Bots")
-raw_admins = os.environ.get("ADMIN_IDS", "7191595289,7258860451")
+BOT_TOKEN = "8133117251:AAH2pr-gQ2bjr4EYxKhdk_tcPlqQxAaXF9Y"
+MAIN_CHANNEL_USERNAME = "Unix_Bots"
+raw_admins = "7191595289,7258860451"
 ADMIN_IDS = [int(x) for x in raw_admins.split(",") if x.strip()]
 
 # 2. MongoDB Settings
@@ -467,4 +467,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     keep_alive()
+
     main()
