@@ -1,3 +1,4 @@
+from keep_alive import keep_alive
 import os
 import logging
 import datetime
@@ -276,4 +277,6 @@ def main():
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == "__main__":
+    keep_alive()
     main()
+
