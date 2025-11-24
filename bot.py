@@ -1,4 +1,3 @@
-from keep_alive import keep_alive
 import os
 import logging
 import datetime
@@ -100,21 +99,29 @@ def track_user(user, update_last_seen: bool = False) -> None:
     
     now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
     
-    update_fields = {
+    # Fields to always update
+    set_fields = {
         "username": user.username,
         "first_name": user.first_name,
         "is_bot": user.is_bot
     }
     
+    # Fields to set ONLY if the document is new
+    setOnInsert_fields = {"joined_at": now_iso}
+
     if update_last_seen:
-        update_fields["last_seen"] = now_iso
+        # If we are updating last_seen, it goes into $set
+        set_fields["last_seen"] = now_iso
+    else:
+        # If we are NOT updating last_seen, we still want to set it initially if the user is new
+        setOnInsert_fields["last_seen"] = now_iso
 
     try:
         users_col.update_one(
             {"_id": user.id},
             {
-                "$set": update_fields,
-                "$setOnInsert": {"last_seen": now_iso, "joined_at": now_iso}
+                "$set": set_fields,
+                "$setOnInsert": setOnInsert_fields
             },
             upsert=True
         )
@@ -466,6 +473,4 @@ def main() -> None:
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == "__main__":
-    keep_alive()
-
     main()
